@@ -33,9 +33,9 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.4.3</version>
                 <configuration>
-                    <changelogSchemaName>${profile.changelogSchemaName}</changelogSchemaName>
-                    <propertyFile>${profile.propertyFile}</propertyFile>
-                    <changeLogFile>${profile.changeLogFile}</changeLogFile>
+                    <changelogSchemaName>test</changelogSchemaName>
+                    <propertyFile>src/main/resources/local/liquibase.properties</propertyFile>
+                    <changeLogFile>src/main/resources/master.xml</changeLogFile>
                 </configuration>
             </plugin>
         </plugins>
