@@ -8,7 +8,7 @@
     <changeSet id="2021-09-18 19:00:00" author="skuznetsov">
         <sqlFile path="sql/core/taxi_drive_info.sql" relativeToChangelogFile="true"/>
         <rollback>
-            <sqlFile path="core/rollback/taxi_drive_info_rollback.sql" relativeToChangelogFile="true"/>
+            <sqlFile path="sql/core/rollback/taxi_drive_info_rollback.sql" relativeToChangelogFile="true"/>
         </rollback>
     </changeSet>
 

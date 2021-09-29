@@ -1,14 +1,18 @@
 package ru.digitalleague.core.listener;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
-@EnableRabbit
 @Component
+@EnableRabbit
 @Slf4j
-public class RabbitQueueListener {
+@ConditionalOnBean(value = RabbitTemplate.class)
+public class RabbitMqListener {
 
     /**
      * Получаем информацию о заказе.
