@@ -66,13 +66,4 @@ public class ApplicationConfiguration {
         liquibase.setShouldRun(false);
         return liquibase;
     }
-
-//    @Bean(name="listenerOrderQueue")
-//    public SimpleMessageListenerContainer messageListenerMyQueue1() {
-//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-//        container.setConnectionFactory(connectionFactory());
-//        container.setQueueNames("order");
-//        container.setMessageListener();
-//        return container;
-//    }
 }
