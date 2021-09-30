@@ -2,10 +2,6 @@ package ru.digitalleague.core.controller;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,29 +9,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ru.digitalleague.core.model.OrderDetails;
+import ru.digitalleague.core.api.TaxiService;
 
 @RestController
 @Slf4j
-public class Controller {
+public class OrderController {
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private AmqpTemplate amqpTemplate;
+    private TaxiService taxiService;
 
     @PostMapping("/order-taxi")
     public ResponseEntity<String> receive(@RequestBody OrderDetails orderDetails) {
         log.info("Received message from postman" + orderDetails);
 
-        String message = null;
-        try {
-            message = objectMapper.writeValueAsString(orderDetails);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        amqpTemplate.convertAndSend("order", message);
+        String result = taxiService.notifyTaxi(orderDetails);
 
-        return ResponseEntity.ok("Request to place order has been send");
+        return ResponseEntity.ok(result);
     }
 }

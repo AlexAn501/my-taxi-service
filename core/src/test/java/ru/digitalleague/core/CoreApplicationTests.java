@@ -94,29 +94,29 @@ class CoreApplicationTests {
         thread2.join();
     }
 
-    @SneakyThrows
-    @Test
-    void update_repeatableRead() {
-
-        taxiInfoService.insert(taxiDriverInfoModel);
-
-        Thread thread1 = new Thread(() -> {
-            System.out.println("666: " + taxiInfoService.twoSelectByIdWithSleep());
-        });
-        Thread thread2 = new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            taxiInfoService.insert(taxiDriverInfoModel);
-            log.debug("Добавлена запись");
-        });
-        thread1.start();
-        thread2.start();
-        thread1.join();
-        thread2.join();
-
-    }
+//    @SneakyThrows
+//    @Test
+//    void update_repeatableRead() {
+//
+//        taxiInfoService.insert(taxiDriverInfoModel);
+//
+//        Thread thread1 = new Thread(() -> {
+//            System.out.println("666: " + taxiInfoService.twoSelectByIdWithSleep());
+//        });
+//        Thread thread2 = new Thread(() -> {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            taxiInfoService.insert(taxiDriverInfoModel);
+//            log.debug("Добавлена запись");
+//        });
+//        thread1.start();
+//        thread2.start();
+//        thread1.join();
+//        thread2.join();
+//
+//    }
 
 }

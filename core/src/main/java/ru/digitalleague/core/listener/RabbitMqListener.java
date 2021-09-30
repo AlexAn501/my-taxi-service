@@ -17,8 +17,8 @@ public class RabbitMqListener {
     /**
      * Получаем информацию о заказе.
      */
-    @RabbitListener(queues = "order")
+    @RabbitListener(queues = "trip-result")
     public void processRabbitMessage(String message) {
-        log.info("Received message from rabbitmq " + message);
+        log.info("Поездка завершена " + message);
     }
 }
