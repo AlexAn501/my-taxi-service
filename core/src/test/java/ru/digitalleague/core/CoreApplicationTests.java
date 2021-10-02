@@ -18,81 +18,81 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 class CoreApplicationTests {
 
-    @Autowired
-    private TaxiInfoService taxiInfoService;
-
-    TaxiDriverInfoModel taxiDriverInfoModel = TaxiDriverInfoModel.builder()
-            .carModel("BMW")
-            .lastName("Иванов")
-            .firstName("Иван")
-            .level(0)
-            .createDttm(OffsetDateTime.now())
-            .build();
-
-    @Test
-    void insert() {
-        //GIVEN
-
-        //WHEN
-        int insert = taxiInfoService.insert(taxiDriverInfoModel);
-
-        //THAN
-        assertThat(insert).isEqualTo(1);
-    }
-
-    @Test
-    void update_twoTransactionalSeparateSelect() throws InterruptedException {
-
-        //GIVEN
-
-        //WHEN
-        taxiInfoService.insert(taxiDriverInfoModel);
-        Long driverId = taxiDriverInfoModel.getDriverId();
-
-        Thread thread1 = new Thread(() -> {
-            for (int i = 0; i < 100; i++) {
-                TaxiDriverInfoModel taxiDriverInfoModel1 = taxiInfoService.selectByPrimaryKey(driverId);
-                taxiDriverInfoModel1.setLevel(taxiDriverInfoModel1.getLevel() + 1);
-                taxiInfoService.updateByPrimaryKey(taxiDriverInfoModel1);
-            }
-        });
-        Thread thread2 = new Thread(() -> {
-            for (int i = 0; i < 100; i++) {
-                TaxiDriverInfoModel taxiDriverInfoModel2 = taxiInfoService.selectByPrimaryKey(driverId);
-                taxiDriverInfoModel2.setLevel(taxiDriverInfoModel2.getLevel() + 1);
-                taxiInfoService.updateByPrimaryKey(taxiDriverInfoModel2);
-            }
-        });
-
-        thread1.start();
-        thread2.start();
-        thread1.join();
-        thread2.join();
-        //THEN
-    }
-
-    @Test
-    void update_twoTransactionalInOneSelect() throws InterruptedException {
-
-        taxiInfoService.insert(taxiDriverInfoModel);
-        Long driverId = taxiDriverInfoModel.getDriverId();
-
-        Thread thread1 = new Thread(() -> {
-            for (int i = 0; i < 100; i++) {
-                taxiInfoService.getByIdAndUpdateLevel(driverId);
-            }
-        });
-        Thread thread2 = new Thread(() -> {
-            for (int i = 0; i < 100; i++) {
-                taxiInfoService.getByIdAndUpdateLevel(driverId);
-            }
-        });
-
-        thread1.start();
-        thread2.start();
-        thread1.join();
-        thread2.join();
-    }
+//    @Autowired
+//    private TaxiInfoService taxiInfoService;
+//
+//    TaxiDriverInfoModel taxiDriverInfoModel = TaxiDriverInfoModel.builder()
+//            .carModel("BMW")
+//            .lastName("Иванов")
+//            .firstName("Иван")
+//            .level(0)
+//            .createDttm(OffsetDateTime.now())
+//            .build();
+//
+//    @Test
+//    void insert() {
+//        //GIVEN
+//
+//        //WHEN
+//        int insert = taxiInfoService.insert(taxiDriverInfoModel);
+//
+//        //THAN
+//        assertThat(insert).isEqualTo(1);
+//    }
+//
+//    @Test
+//    void update_twoTransactionalSeparateSelect() throws InterruptedException {
+//
+//        //GIVEN
+//
+//        //WHEN
+//        taxiInfoService.insert(taxiDriverInfoModel);
+//        Long driverId = taxiDriverInfoModel.getDriverId();
+//
+//        Thread thread1 = new Thread(() -> {
+//            for (int i = 0; i < 100; i++) {
+//                TaxiDriverInfoModel taxiDriverInfoModel1 = taxiInfoService.selectByPrimaryKey(driverId);
+//                taxiDriverInfoModel1.setLevel(taxiDriverInfoModel1.getLevel() + 1);
+//                taxiInfoService.updateByPrimaryKey(taxiDriverInfoModel1);
+//            }
+//        });
+//        Thread thread2 = new Thread(() -> {
+//            for (int i = 0; i < 100; i++) {
+//                TaxiDriverInfoModel taxiDriverInfoModel2 = taxiInfoService.selectByPrimaryKey(driverId);
+//                taxiDriverInfoModel2.setLevel(taxiDriverInfoModel2.getLevel() + 1);
+//                taxiInfoService.updateByPrimaryKey(taxiDriverInfoModel2);
+//            }
+//        });
+//
+//        thread1.start();
+//        thread2.start();
+//        thread1.join();
+//        thread2.join();
+//        //THEN
+//    }
+//
+//    @Test
+//    void update_twoTransactionalInOneSelect() throws InterruptedException {
+//
+//        taxiInfoService.insert(taxiDriverInfoModel);
+//        Long driverId = taxiDriverInfoModel.getDriverId();
+//
+//        Thread thread1 = new Thread(() -> {
+//            for (int i = 0; i < 100; i++) {
+//                taxiInfoService.getByIdAndUpdateLevel(driverId);
+//            }
+//        });
+//        Thread thread2 = new Thread(() -> {
+//            for (int i = 0; i < 100; i++) {
+//                taxiInfoService.getByIdAndUpdateLevel(driverId);
+//            }
+//        });
+//
+//        thread1.start();
+//        thread2.start();
+//        thread1.join();
+//        thread2.join();
+//    }
 
 //    @SneakyThrows
 //    @Test
