@@ -1,8 +1,10 @@
 package ru.digitalleague.core.mapper;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Repository;
 
@@ -27,4 +29,6 @@ public interface UserAccountEntityMapper {
 
     @SelectProvider(value = SqlProvider.class, method = "test")
     UserAccountEntity findTestSqlInjection(String sql);
+
+    List<String> showAllUsersLogin();
 }

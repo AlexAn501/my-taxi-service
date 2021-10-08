@@ -94,4 +94,8 @@
                      left join authority a on a.user_account_id = ua.id
         where ua.login = #{login,jdbcType=VARCHAR}
     </select>
+
+    <select id="showAllUsersLogin" resultMap="BaseResultMap">
+        select login from user_account
+    </select>
 </mapper>

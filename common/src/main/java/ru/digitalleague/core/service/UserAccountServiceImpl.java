@@ -49,4 +49,9 @@ public class UserAccountServiceImpl implements UserAccountService, UserDetailsSe
         UserAccountEntity testSqlInjection = userAccountEntityMapper.findTestSqlInjection(login);
         return testSqlInjection;
     }
+
+    @Override
+    public List<String> showAllUserLogin() {
+        return userAccountEntityMapper.showAllUsersLogin();
+    }
 }
