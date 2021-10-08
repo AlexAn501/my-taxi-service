@@ -27,8 +27,9 @@ public class HomeController {
     private final UserAccountService userAccountService;
 
     @GetMapping("home")
-    public void home(/*@RequestParam String login*/) {
+    public String home(/*@RequestParam String login*/) {
 //        return userAccountService.test(login);
+        return "This is start page";
     }
 
     @GetMapping("auth")
