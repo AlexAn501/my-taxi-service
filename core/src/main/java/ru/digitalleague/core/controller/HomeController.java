@@ -39,6 +39,10 @@ public class HomeController {
         return "auth " + principal.getName();
     }
 
+    /**
+     * этот метод работает только для ADMIN
+     * @return List<UserAccountEntity>
+     */
     @GetMapping("users")
     public ResponseEntity<List> showAllUsersLogin(){
         return new ResponseEntity<>(userAccountService.showAllUserLogin(), HttpStatus.OK);
