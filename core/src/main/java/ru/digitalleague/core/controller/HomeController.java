@@ -27,8 +27,8 @@ public class HomeController {
     private final UserAccountService userAccountService;
 
     @GetMapping("home")
-    public UserAccountEntity home(@RequestParam String login) {
-        return userAccountService.test(login);
+    public void home(/*@RequestParam String login*/) {
+//        return userAccountService.test(login);
     }
 
     @GetMapping("auth")
