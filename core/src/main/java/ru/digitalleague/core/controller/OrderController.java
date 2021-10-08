@@ -1,5 +1,6 @@
 package ru.digitalleague.core.controller;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class OrderController {
     private TaxiService taxiService;
 
     @PostMapping("/order-taxi")
+    @ApiOperation(value = "Контроллер для заказа такси")
     public ResponseEntity<String> receive(@RequestBody OrderDetails orderDetails) {
         log.info("Received message from postman" + orderDetails);
 

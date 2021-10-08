@@ -22,6 +22,7 @@
         <module>bom</module>
         <module>migration</module>
         <module>taxi_company</module>
+        <module>dto</module>
     </modules>
 
     <dependencies>

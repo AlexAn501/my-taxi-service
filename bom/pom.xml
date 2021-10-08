@@ -17,6 +17,7 @@
         <mavem.compiler.target>1.8</mavem.compiler.target>
         <spring.boot.version>2.5.4</spring.boot.version>
         <mybatis.version>2.2.0</mybatis.version>
+        <swagger.version>2.9.2</swagger.version>
     </properties>
 
     <packaging>pom</packaging>
@@ -40,6 +41,18 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${spring.boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

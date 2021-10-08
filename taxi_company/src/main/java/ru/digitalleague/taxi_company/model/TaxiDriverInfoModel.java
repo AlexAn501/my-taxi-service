@@ -7,6 +7,9 @@ import java.time.OffsetDateTime;
 @Data
 public class TaxiDriverInfoModel {
 
+    /**
+     * Идентификатор водителя.
+     */
     private Long driverId;
 
     /**
