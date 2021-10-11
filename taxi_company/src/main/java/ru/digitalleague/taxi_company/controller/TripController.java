@@ -62,7 +62,6 @@ public class TripController {
 //
 //        orderService.save(order);
 
-//        taxiService.showAllAvailableDriver(orderDetails);
 
         return ResponseEntity.ok("Поездка началась");
     }
