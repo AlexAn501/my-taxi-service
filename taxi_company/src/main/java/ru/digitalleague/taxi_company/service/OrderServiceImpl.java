@@ -7,6 +7,8 @@ import ru.digitalleague.taxi_company.api.OrderService;
 import ru.digitalleague.taxi_company.mapper.OrderMapper;
 import ru.digitalleague.taxi_company.model.Order;
 
+import java.time.OffsetDateTime;
+
 /**
  * Сервис обработки заказов.
  */
@@ -23,4 +25,17 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.saveOrder(order);
         System.out.println("Order saved");
     }
+
+    @Override
+    public long getOrderId() {
+        return orderMapper.getOrderId();
+    }
+
+    @Override
+    public void saveEndTimeTrip(OffsetDateTime time, long orderId) {
+        orderMapper.saveEndTimeTrip(time, orderId);
+        System.out.println("Order update");
+    }
+
+
 }

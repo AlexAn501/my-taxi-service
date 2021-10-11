@@ -69,5 +69,24 @@
         </rollback>
     </changeSet>
 
+    <changeSet id="2021-10-09 00:11" author="aaantonov">
+        <sqlFile path="sql/core/alter_city_queue.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="sql/core/rollback/alter_city_queue_rollback.sql" relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
 
+    <changeSet id="2021-10-09 00:15" author="aaantonov">
+        <sqlFile path="sql/core/alter_taxi_drive_info_3.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="sql/core/rollback/alter_taxi_drive_info_3_rollback.sql" relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2021-10-10 21:03" author="aantonov">
+        <sqlFile path="sql/core/alter_car.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="sql/core/rollback/alter_car_rollback.sql" relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>

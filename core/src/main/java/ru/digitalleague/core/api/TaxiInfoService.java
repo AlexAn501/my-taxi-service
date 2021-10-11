@@ -1,4 +1,4 @@
-package ru.digitalleague.core.service;
+package ru.digitalleague.core.api;
 
 import ru.digitalleague.core.model.TaxiDriverInfoModel;
 

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.OffsetDateTime;
 
 @Data
-public class TaxiDriverInfoModel {
+public class TaxiDriverInfo {
 
     /**
      * Идентификатор водителя.
@@ -29,11 +29,32 @@ public class TaxiDriverInfoModel {
 
     /**
      * Модель авто (должна быть ENUM).
+     * Идентификатор а/м
      */
-    private String carModel;
+    private String carId;
 
     /**
      * Дата создания.
      */
     private OffsetDateTime createDttm;
+
+    /**
+     * Стоимость одной минуты
+     */
+    private int minuteCost;
+
+    /**
+     * К какому таксопарку(Городу) относится водитель
+     */
+    private long cityId;
+
+    /**
+     * Личный рейтинг водителя
+     */
+    private int rating;
+
+    /**
+     * Занят ли водитель
+     */
+    private boolean isBusy;
 }

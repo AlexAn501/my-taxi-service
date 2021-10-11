@@ -1,0 +1,1 @@
+ALTER TABLE city_queue DROP CONSTRAINT IF EXISTS city_pk;

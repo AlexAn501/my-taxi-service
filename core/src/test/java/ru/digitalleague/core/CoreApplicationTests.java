@@ -1,16 +1,8 @@
 package ru.digitalleague.core;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.OffsetDateTime;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import ru.digitalleague.core.model.TaxiDriverInfoModel;
-import ru.digitalleague.core.service.TaxiInfoService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

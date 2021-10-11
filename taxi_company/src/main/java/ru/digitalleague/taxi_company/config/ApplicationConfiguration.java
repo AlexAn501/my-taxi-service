@@ -50,7 +50,8 @@ public class ApplicationConfiguration {
     }
 
     /**
-     * Очередь для приема результатов поездки.
+     * Очередь для приема заказов.
+     * Название города(таксопарка)
      */
     @Bean
     public Queue myQueue3() {
