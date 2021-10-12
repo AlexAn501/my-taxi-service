@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface CarMapper {
 
     @Select("SELECT id FROM car WHERE model = #{model}")
-    String findIdByModel(String model);
+    long findIdByModel(String model);
 }

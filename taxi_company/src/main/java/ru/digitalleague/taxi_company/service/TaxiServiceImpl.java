@@ -6,8 +6,6 @@ import ru.digitalleague.taxi_company.api.TaxiService;
 import ru.digitalleague.taxi_company.mapper.TaxiDriveInfoMapper;
 import ru.digitalleague.taxi_company.model.TaxiDriverInfo;
 
-import java.util.List;
-
 @Service
 public class TaxiServiceImpl implements TaxiService {
 
@@ -15,8 +13,8 @@ public class TaxiServiceImpl implements TaxiService {
     TaxiDriveInfoMapper taxiDriveInfoMapper;
 
     @Override
-    public List<TaxiDriverInfo> showAllAvailableDriver(long cityId, String carModel) {
-        List<TaxiDriverInfo> drivers = taxiDriveInfoMapper.showAllAvailableDriver(cityId, carModel);
-        return drivers;
+    public TaxiDriverInfo findAvailableDriver(long cityId, String carModel) {
+        TaxiDriverInfo driver = taxiDriveInfoMapper.findAvailableDriver(cityId, carModel);
+        return driver;
     }
 }

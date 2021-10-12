@@ -12,7 +12,7 @@ public class CarServiceImpl implements CarService {
     CarMapper carMapper;
 
     @Override
-    public String findModelById(String model) {
+    public long findIdByModel(String model) {
         return carMapper.findIdByModel(model);
     }
 }

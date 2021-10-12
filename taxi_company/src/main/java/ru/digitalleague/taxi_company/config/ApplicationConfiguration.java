@@ -17,7 +17,11 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.context.annotation.Scope;
+import ru.digitalleague.taxi_company.controller.TripController;
 import ru.digitalleague.taxi_company.listener.OrderListener;
+
+import java.time.OffsetDateTime;
 
 @Configuration
 @Slf4j
@@ -75,14 +79,20 @@ public class ApplicationConfiguration {
         return liquibase;
     }
 
-    @Bean
-    public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
-        SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
-        simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
-        // устанавливаем очередь, которую будет слушать приложение
-        simpleMessageListenerContainer.setQueues(myQueue3());
-        simpleMessageListenerContainer.setMessageListener(new OrderListener());
-        return simpleMessageListenerContainer;
+//    @Bean
+//    public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
+//        SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
+//        simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
+//        // устанавливаем очередь, которую будет слушать приложение
+//        simpleMessageListenerContainer.setQueues(myQueue3());
+//        simpleMessageListenerContainer.setMessageListener(new OrderListener());
+//        return simpleMessageListenerContainer;
+//    }
 
+    @Bean(name = "currentTime")
+    @Scope(value = "prototype")
+    public OffsetDateTime currentTime(){
+        OffsetDateTime offsetDateTime = OffsetDateTime.now();
+        return offsetDateTime;
     }
 }

@@ -5,5 +5,5 @@ package ru.digitalleague.taxi_company.api;
  */
 public interface CarService {
 
-    String findModelById(String model);
+    long findIdByModel(String model);
 }

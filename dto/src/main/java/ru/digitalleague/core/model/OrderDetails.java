@@ -1,5 +1,8 @@
 package ru.digitalleague.core.model;
 
+import lombok.Data;
+
+@Data
 public class OrderDetails {
 
     /**
