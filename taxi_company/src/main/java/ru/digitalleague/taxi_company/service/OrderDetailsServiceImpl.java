@@ -9,6 +9,7 @@ import ru.digitalleague.core.model.OrderDetails;
 import ru.digitalleague.taxi_company.api.OrderDetailsService;
 import ru.digitalleague.taxi_company.mapper.OrderDetailsMapper;
 
+@Deprecated
 @Service
 @Slf4j
 public class OrderDetailsServiceImpl implements OrderDetailsService {

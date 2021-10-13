@@ -33,35 +33,15 @@ public interface OrderMapper {
             "minute_cost, city_id, rating, busy FROM orders WHERE car_id = #{carId} ORDER BY rating LIMIT 1")
     TaxiDriverInfo findDriverByCarId(long carId);
 
-    @Insert("INSERT INTO orders (client_number, driver_id) values (#{clientNumber}, #{driverId})")
-    void createNewOrder(long clientNumber, long driverId);
+    @Insert("INSERT INTO orders (order_id, client_number, driver_id) values (#{orderId}, #{clientNumber}, #{driverId})")
+    void createNewOrder(long orderId, long clientNumber, long driverId);
 
-    @Select("SELECT order_id FROM orders WHERE client_number = #{clientNumber} AND driver_id = #{driverId}")
-    long findOrderIdByClientNumberAndDriverId(long clientNumber, long driverId);
+//    @Select("SELECT order_id FROM orders WHERE client_number = #{clientNumber} AND driver_id = #{driverId}")
+//    long findOrderIdByClientNumberAndDriverId(long clientNumber, long driverId);
 
-    @Update("UPDATE INTO taxi_drive_info SET busy = true WHERE driver_id = #{driverId}")
+    @Update("UPDATE taxi_drive_info SET busy = true WHERE driver_id = #{driverId}")
     void setBusy(long driverId);
 
-        @Select("SELECT driver_id, first_name, last_name, level, create_dttm, model as car_model," +
-                " taxi_drive_info.city_id, minute_cost, rating, busy" +
-                " FROM taxi_drive_info" +
-                " INNER JOIN car c on c.id = taxi_drive_info.car_id" +
-            " INNER JOIN city_queue cq on cq.city_id = taxi_drive_info.city_id" +
-            " WHERE name = #{cityName} and model = #{carModel} and busy = false and level = #{level}" +
-            " limit 1")
-    TaxiDriverInfo findDriver(String cityName, String carModel, int level);
+    @Select("SELECT nextval('order_seq');")
+    long findNextId();
 }
-//@Results(id = "driver", value = {
-//            @Result(property = "driverId", column = "driver_id"),
-//            @Result(property = "lastName", column = "last_name"),
-//            @Result(property = "firstName", column = "first_name"),
-//            @Result(property = "level", column = "level"),
-//            @Result(property = "createDttm", column = "create_dttm"),
-//            @Result(property = "carModel", column = "car_model")
-//    })
-//    @Select("select driver_id, first_name, last_name, level, create_dttm, model as car_model from taxi_drive_info" +
-//            "inner join car c on c.id = taxi_drive_info.car_id" +
-//            "inner join city_queue cq on cq.city_id = taxi_drive_info.city_id" +
-//            "where name = #{cityName} and model = #{carModel} and busy = false and level = #{level}" +
-//            "limit 1")
-//    TaxiDriverInfoModel getAvailableDriverByCityCarAndLvl(String cityName, CarModel carModel, int level);

@@ -12,6 +12,7 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -91,7 +92,7 @@ public class ApplicationConfiguration {
 
     @Bean(name = "currentTime")
     @Scope(value = "prototype")
-    public OffsetDateTime currentTime(){
+    public OffsetDateTime currentTime() {
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         return offsetDateTime;
     }

@@ -3,6 +3,7 @@ package ru.digitalleague.taxi_company.model;
 import lombok.Data;
 
 import java.time.OffsetDateTime;
+import java.util.Date;
 
 @Data
 public class TaxiDriverInfo {
@@ -36,7 +37,7 @@ public class TaxiDriverInfo {
     /**
      * Дата создания.
      */
-    private OffsetDateTime createDttm;
+    private Date createDttm;
 
     /**
      * Стоимость одной минуты

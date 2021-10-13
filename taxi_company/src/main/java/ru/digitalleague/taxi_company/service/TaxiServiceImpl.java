@@ -6,6 +6,7 @@ import ru.digitalleague.taxi_company.api.TaxiService;
 import ru.digitalleague.taxi_company.mapper.TaxiDriveInfoMapper;
 import ru.digitalleague.taxi_company.model.TaxiDriverInfo;
 
+@Deprecated
 @Service
 public class TaxiServiceImpl implements TaxiService {
 

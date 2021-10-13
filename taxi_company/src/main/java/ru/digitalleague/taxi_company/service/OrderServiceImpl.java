@@ -3,10 +3,13 @@ package ru.digitalleague.taxi_company.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.digitalleague.core.model.OrderDetails;
 import ru.digitalleague.taxi_company.api.OrderService;
 import ru.digitalleague.taxi_company.mapper.CarMapper;
 import ru.digitalleague.taxi_company.mapper.OrderMapper;
+import ru.digitalleague.taxi_company.mapper.TaxiDriveInfoMapper;
 import ru.digitalleague.taxi_company.model.Order;
 import ru.digitalleague.taxi_company.model.TaxiDriverInfo;
 
@@ -21,9 +24,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderMapper orderMapper;
+//
+//    @Autowired
+//    CarMapper carMapper;
 
     @Autowired
-    CarMapper carMapper;
+    TaxiDriveInfoMapper taxiDriveInfoMapper;
 
     @Override
     public void save(Order order) {
@@ -46,23 +52,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public TaxiDriverInfo findDriver(OrderDetails orderDetails) {
-//        String model = orderDetails.getCarModel();
-//        long carId = carMapper.findIdByModel(model);
-//        TaxiDriverInfo driver = orderMapper.findDriverByCarId(carId);
-        TaxiDriverInfo driver = orderMapper.
-                findDriver(orderDetails.getCity(),orderDetails.getCarModel(),orderDetails.getLevel());
+        TaxiDriverInfo driver = taxiDriveInfoMapper.
+                findDriverByCityAndCarModelAndLevel(orderDetails.getCity(),orderDetails.getCarModel(),orderDetails.getLevel());
         return driver;
     }
 
     @Override
-    public void createOrder(long clientNumber, long driverId) {
-        orderMapper.createNewOrder(clientNumber,driverId);
+//    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public long createOrder(long clientNumber, long driverId) {
+        long orderId = orderMapper.findNextId();
+        orderMapper.createNewOrder(orderId,clientNumber,driverId);
+        return orderId;
     }
 
-    @Override
-    public long findOrderIdByClientNumberAndDriverId(long clientNumber, long driverId) {
-        return orderMapper.findOrderIdByClientNumberAndDriverId(clientNumber, driverId);
-    }
+//    @Override
+//    public long findOrderIdByClientNumberAndDriverId(long clientNumber, long driverId) {
+//        return orderMapper.findOrderIdByClientNumberAndDriverId(clientNumber, driverId);
+//    }
 
     @Override
     public void setBusy(long driverId) {

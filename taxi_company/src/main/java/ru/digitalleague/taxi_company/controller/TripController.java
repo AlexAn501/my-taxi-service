@@ -24,42 +24,43 @@ import java.time.OffsetDateTime;
  * Контроллер обрабатывающий начало и конец поездки
  */
 
+@Deprecated
 @RestController
 @Slf4j
 public class TripController {
-    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+//    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
 
-    @Autowired
-    TaxiService taxiService;
+//    @Autowired
+//    TaxiService taxiService;
 
-    @Autowired
-    OrderDetailsService orderDetailsService;
+//    @Autowired
+//    OrderDetailsService orderDetailsService;
+//
+//    @Autowired
+//    OrderService orderService;
 
-    @Autowired
-    OrderService orderService;
-
-    @Autowired
-    CarService carService;
-
-
-    @PostMapping("/start-trip")
-    public ResponseEntity<String> startTrip(@RequestBody Order order) {
-        OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
-        order.setStartTrip(currentTime);
-        orderService.saveStartTripTime(order.getStartTrip(), order.getOrderId());
-        log.info("Save start time " + order);
-        return new ResponseEntity<>("Saved start time", HttpStatus.OK);
-    }
+//    @Autowired
+//    CarService carService;
 
 
-    @PostMapping("/end-trip")
-    public String endTrip(@RequestBody Order order) {
-        OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
-        order.setEndTrip(currentTime);
-        orderService.saveEndTimeTrip(order.getStartTrip(), order.getOrderId());
-        log.info("Save end time " + order);
-//        return new ResponseEntity<>("Saved end time", HttpStatus.OK);
-        return "redirect:/trip-complete";
+//    @PostMapping("/start-trip")
+//    public ResponseEntity<String> startTrip(@RequestBody Order order) {
+//        OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
+//        order.setStartTrip(currentTime);
+//        orderService.saveStartTripTime(order.getStartTrip(), order.getOrderId());
+//        log.info("Save start time " + order);
+//        return new ResponseEntity<>("Saved start time", HttpStatus.OK);
+//    }
+//
+//
+//    @PostMapping("/end-trip")
+//    public String endTrip(@RequestBody Order order) {
+//        OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
+//        order.setEndTrip(currentTime);
+//        orderService.saveEndTimeTrip(order.getStartTrip(), order.getOrderId());
+//        log.info("Save end time " + order);
+////        return new ResponseEntity<>("Saved end time", HttpStatus.OK);
+//        return "redirect:/trip-complete";
     }
 
 //    /**
@@ -100,4 +101,4 @@ public class TripController {
 //        orderService.saveEndTimeTrip(OffsetDateTime.now(), orderId);
 //        return "redirect:/trip-complete";
 //    }
-}
+//}

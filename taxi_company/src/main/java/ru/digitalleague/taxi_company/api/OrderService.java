@@ -20,9 +20,9 @@ public interface OrderService {
 
     TaxiDriverInfo findDriver(OrderDetails orderDetails);
 
-    void createOrder(long clientNumber, long driverId);
+    long createOrder(long clientNumber, long driverId);
 
-    long findOrderIdByClientNumberAndDriverId(long clientNumber, long driverId);
+//    long findOrderIdByClientNumberAndDriverId(long clientNumber, long driverId);
 
     void setBusy(long driverId);
 }

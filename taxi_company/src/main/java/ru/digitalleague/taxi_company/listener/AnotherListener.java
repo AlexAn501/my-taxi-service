@@ -3,14 +3,12 @@ package ru.digitalleague.taxi_company.listener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.digitalleague.core.model.OrderDetails;
 import ru.digitalleague.taxi_company.api.OrderService;
 import ru.digitalleague.taxi_company.model.TaxiDriverInfo;
-import ru.digitalleague.taxi_company.service.OrderServiceImpl;
 
 @Slf4j
 @Component
@@ -36,9 +34,9 @@ public class AnotherListener {
         long driverId = driver.getDriverId();
 
         log.info("clientNumber and driverId: " + clientNumber + "  " + driverId);
-        orderService.createOrder(clientNumber, driverId);
-
-        long orderId = orderService.findOrderIdByClientNumberAndDriverId(clientNumber,driverId);
+        long orderId = orderService.createOrder(clientNumber, driverId);
+        log.info("orderId = " + orderId);
+//        long orderId = orderService.findOrderIdByClientNumberAndDriverId(clientNumber,driverId);
 
         orderService.setBusy(driverId);
 

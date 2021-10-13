@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.digitalleague.taxi_company.api.CarService;
 import ru.digitalleague.taxi_company.mapper.CarMapper;
 
+@Deprecated
 @Service
 public class CarServiceImpl implements CarService {
 

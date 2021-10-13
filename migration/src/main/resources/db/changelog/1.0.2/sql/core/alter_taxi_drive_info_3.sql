@@ -1,11 +1,11 @@
 ALTER TABLE taxi_drive_info ADD COLUMN IF NOT EXISTS city_id BIGINT;
 
-ALTER TABLE taxi_drive_info ADD CONSTRAINT taxi_drive_city_id FOREIGN KEY (city_id)
-REFERENCES city_queue (city_id);
+-- ALTER TABLE taxi_drive_info ADD CONSTRAINT  taxi_drive_city_id FOREIGN KEY (city_id)
+-- REFERENCES city_queue (city_id);
 
-ALTER TABLE taxi_drive_info ADD COLUMN rating INT DEFAULT 1 CHECK (rating > 0 AND rating <= 5);
+ALTER TABLE taxi_drive_info ADD COLUMN IF NOT EXISTS rating INT DEFAULT 1 CHECK (rating > 0 AND rating <= 5);
 
-ALTER TABLE taxi_drive_info ADD COLUMN busy BOOLEAN DEFAULT false;
+ALTER TABLE taxi_drive_info ADD COLUMN IF NOT EXISTS busy BOOLEAN DEFAULT false;
 
 ALTER TABLE taxi_drive_info RENAME COLUMN car_model TO car_id;
 
