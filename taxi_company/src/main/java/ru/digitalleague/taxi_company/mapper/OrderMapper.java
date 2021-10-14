@@ -39,4 +39,7 @@ public interface OrderMapper {
 
     @Select("SELECT end_trip FROM orders WHERE order_id = #{orderId}")
     OffsetDateTime findEndTimeById(long orderId);
+
+    @Select("SELECT driver_id FROM orders WHERE order_id = #{orderId}")
+    long findDriverIdByOrderId(long orderId);
 }

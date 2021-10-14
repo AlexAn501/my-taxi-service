@@ -40,7 +40,7 @@ public class TaxiController {
     public ResponseEntity<String> startTrip(@RequestBody Order order){
         OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
         service.saveStartTripTime(currentTime,order.getOrderId());
-        log.warn("Save start time " + service.findStartTimeById(order.getOrderId()));
+        log.debug("Save start time " + service.findStartTimeById(order.getOrderId()));
         return ResponseEntity.ok("Start trip time: " + service.findStartTimeById(order.getOrderId()));
     }
 
@@ -53,14 +53,25 @@ public class TaxiController {
     public ResponseEntity<String> endTrip(@RequestBody Order order){
         OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
         service.saveEndTimeTrip(currentTime,order.getOrderId());
-        log.warn("Save end time " + service.findEndTimeById(order.getOrderId()));
-        service.setBusyFalse(order.getDriverId());
+        log.debug("Save end time " + service.findEndTimeById(order.getOrderId()));
+        //  Ищет Id водителя по Id заказа
+        service.setBusyFalse(order.getOrderId());
         amqpTemplate.convertAndSend("trip-result", "Поездка завершена. Номер поездки: = " + order.getOrderId());
 
         return ResponseEntity.ok("Услуга оказана");
     }
 
+    /**
+     * Делегирует создание заказа в сервис
+     * Передает в ЦОЗ Идентификатор заказа
+     * @param message сообщение из Listener
+     */
+
     public void sendMessageToService(Message message){
-        service.catchMessageFromController(message);
+        long orderId = service.catchMessageFromController(message);
+        amqpTemplate.convertAndSend("trip-result","Идентификатор заказа: " + orderId);
+        log.debug("В ЦОЗ отправлен идентификатор поездки");
     }
+
+
 }

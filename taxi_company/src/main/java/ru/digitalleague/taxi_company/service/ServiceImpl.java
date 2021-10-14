@@ -42,13 +42,13 @@ public class ServiceImpl implements Service {
     @Override
     public void saveEndTimeTrip(OffsetDateTime time, long orderId) {
         orderMapper.saveEndTimeTrip(time, orderId);
-        log.info("Save End Time in OrderServiceImpl");
+        log.debug("Save End Time in OrderServiceImpl");
     }
 
     @Override
-    public void saveStartTripTime(OffsetDateTime time, long id) {
-        orderMapper.saveStartTripTime(time, id);
-        log.info("Save Start Time in OrderServiceImpl");
+    public void saveStartTripTime(OffsetDateTime time, long orderId) {
+        orderMapper.saveStartTripTime(time, orderId);
+        log.debug("Save Start Time in OrderServiceImpl");
     }
 
     @Override
@@ -64,7 +64,8 @@ public class ServiceImpl implements Service {
     }
 
     @Override
-    public void setBusyFalse(long driverId){
+    public void setBusyFalse(long orderId){
+        long driverId = orderMapper.findDriverIdByOrderId(orderId);
         taxiDriveInfoMapper.setBusyFalse(driverId);
     }
 
@@ -87,10 +88,10 @@ public class ServiceImpl implements Service {
         OrderDetails orderDetails = getOrderDetailsFromJSON(message);
 
         TaxiDriverInfo driver = findDriver(orderDetails);
-        log.info("driver: " + driver);
+        log.debug("driver: " + driver);
 
         long orderId = createOrder(orderDetails.getClientNumber(),driver.getDriverId());
-        log.info(String.format("orderInfo: orderId = %d, clientNumber = %d, driverId = %d",
+        log.debug(String.format("orderInfo: orderId = %d, clientNumber = %d, driverId = %d",
                 orderId, orderDetails.getClientNumber(), driver.getDriverId()));
 
         return orderId;
