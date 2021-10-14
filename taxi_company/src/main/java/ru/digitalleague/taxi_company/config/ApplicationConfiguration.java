@@ -10,18 +10,12 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.context.annotation.Scope;
-import ru.digitalleague.taxi_company.controller.TripController;
-import ru.digitalleague.taxi_company.listener.OrderListener;
-
 import java.time.OffsetDateTime;
 
 @Configuration
