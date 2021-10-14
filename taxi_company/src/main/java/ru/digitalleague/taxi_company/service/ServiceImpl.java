@@ -5,9 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import ru.digitalleague.core.model.OrderDetails;
-import ru.digitalleague.taxi_company.api.OrderService;
+import ru.digitalleague.taxi_company.api.Service;
 import ru.digitalleague.taxi_company.mapper.OrderMapper;
 import ru.digitalleague.taxi_company.mapper.TaxiDriveInfoMapper;
 import ru.digitalleague.taxi_company.model.Order;
@@ -19,9 +18,9 @@ import java.time.OffsetDateTime;
 /**
  * Сервис обработки заказов.
  */
-@Service
+@org.springframework.stereotype.Service
 @Slf4j
-public class OrderServiceImpl implements OrderService {
+public class ServiceImpl implements Service {
 
     @Autowired
     OrderMapper orderMapper;

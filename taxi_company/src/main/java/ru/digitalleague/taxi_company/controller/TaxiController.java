@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.digitalleague.taxi_company.api.OrderService;
+import ru.digitalleague.taxi_company.api.Service;
 import ru.digitalleague.taxi_company.model.Order;
 
 import java.time.OffsetDateTime;
@@ -23,7 +23,7 @@ import java.time.OffsetDateTime;
 public class TaxiController {
 
     @Autowired
-    private OrderService orderService;
+    private Service service;
 
     @Autowired
     private ApplicationContext context;
@@ -39,9 +39,9 @@ public class TaxiController {
     @ApiOperation(value = "Контроллер для установки времени начала поездки")
     public ResponseEntity<String> startTrip(@RequestBody Order order){
         OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
-        orderService.saveStartTripTime(currentTime,order.getOrderId());
-        log.warn("Save start time " + orderService.findStartTimeById(order.getOrderId()));
-        return ResponseEntity.ok("Start trip time: " + orderService.findStartTimeById(order.getOrderId()));
+        service.saveStartTripTime(currentTime,order.getOrderId());
+        log.warn("Save start time " + service.findStartTimeById(order.getOrderId()));
+        return ResponseEntity.ok("Start trip time: " + service.findStartTimeById(order.getOrderId()));
     }
 
     /**
@@ -52,15 +52,15 @@ public class TaxiController {
     @ApiOperation(value = "Контроллер для установки времени окончания поездки")
     public ResponseEntity<String> endTrip(@RequestBody Order order){
         OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
-        orderService.saveEndTimeTrip(currentTime,order.getOrderId());
-        log.warn("Save end time " + orderService.findEndTimeById(order.getOrderId()));
-        orderService.setBusyFalse(order.getDriverId());
+        service.saveEndTimeTrip(currentTime,order.getOrderId());
+        log.warn("Save end time " + service.findEndTimeById(order.getOrderId()));
+        service.setBusyFalse(order.getDriverId());
         amqpTemplate.convertAndSend("trip-result", "Поездка завершена. Номер поездки: = " + order.getOrderId());
 
         return ResponseEntity.ok("Услуга оказана");
     }
 
     public void sendMessageToService(Message message){
-        orderService.catchMessageFromController(message);
+        service.catchMessageFromController(message);
     }
 }

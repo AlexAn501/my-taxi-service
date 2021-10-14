@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 /**
  * Сервис обработки заказов.
  */
-public interface OrderService {
+public interface Service {
 
     void save(Order order);
 
