@@ -12,12 +12,12 @@ import ru.digitalleague.taxi_company.controller.TaxiController;
 @Component
 public class AnotherListener {
 
-    @Autowired
-    TaxiController taxiController;
-
-    @SneakyThrows
-    @RabbitListener(queues = "${application.broker.receive-queue}")
-    public void throwsMessage(Message message){
-       taxiController.sendMessageToService(message);
-    }
+//    @Autowired
+//    TaxiController taxiController;
+//
+//    @SneakyThrows
+//    @RabbitListener(queues = "${application.broker.receive-queue}")
+//    public void throwsMessage(Message message){
+//       taxiController.sendMessageToService(message);
+//    }
 }
