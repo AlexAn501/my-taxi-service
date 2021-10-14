@@ -30,5 +30,8 @@ public interface TaxiDriveInfoMapper {
     TaxiDriverInfo findDriverByCityAndCarModelAndLevel(String cityName, String carModel, int level);
 
     @Update("UPDATE taxi_drive_info SET busy = true WHERE driver_id = #{driverId}")
-    void setBusy(long driverId);
+    void setBusyTrue(long driverId);
+
+    @Update("UPDATE taxi_drive_info SET busy = false WHERE driver_id = #{driverId}")
+    void setBusyFalse(long driverId);
 }

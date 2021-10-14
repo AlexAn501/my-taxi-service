@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.digitalleague.core.model.OrderDetails;
 import ru.digitalleague.taxi_company.api.OrderService;
 import ru.digitalleague.taxi_company.model.Order;
 
@@ -55,7 +54,7 @@ public class TaxiController {
         OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
         orderService.saveEndTimeTrip(currentTime,order.getOrderId());
         log.warn("Save end time " + orderService.findEndTimeById(order.getOrderId()));
-
+        orderService.setBusyFalse(order.getDriverId());
         amqpTemplate.convertAndSend("trip-result", "Поездка завершена. Номер поездки: = " + order.getOrderId());
 
         return ResponseEntity.ok("Услуга оказана");
@@ -63,35 +62,5 @@ public class TaxiController {
 
     public void sendMessageToService(Message message){
         orderService.catchMessageFromController(message);
-//        OrderDetails orderDetails = orderService.getOrderDetailsFromJSON(message);
-//
-//        TaxiDriverInfo driver = orderService.findDriver(orderDetails);
-//        log.info("driver: " + driver);
-//
-//        long clientNumber = orderDetails.getClientNumber();
-//        long driverId = driver.getDriverId();
-//
-//        log.info("clientNumber and driverId: " + clientNumber + "  " + driverId);
-//        long orderId = orderService.createOrder(clientNumber, driverId);
-//        log.info("orderId = " + orderId);
-
-//        return String.format("Order id: %d \nClientNumber: %d\nDriver id: %d",orderId, clientNumber, driverId);
     }
 }
-
-
-//    @Autowired
-//    private AmqpTemplate amqpTemplate;
-//
-//    /**
-//     * Метод получает инфо о завершении поездки.
-//     * @param message
-//     * */
-//    @PostMapping("/trip-complete")
-//    public ResponseEntity<String> completeTrip(@RequestBody String message) {
-//        System.out.println("Trip is finished");
-//
-//        amqpTemplate.convertAndSend("trip-result", message);
-//
-//        return ResponseEntity.ok("Услуга оказана");
-//    }

@@ -22,4 +22,6 @@ public interface OrderService {
     OffsetDateTime findStartTimeById(long orderId);
 
     OffsetDateTime findEndTimeById(long orderId);
+
+    void setBusyFalse(long driverId);
 }

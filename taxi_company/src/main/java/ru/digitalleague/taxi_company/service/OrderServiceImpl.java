@@ -64,8 +64,13 @@ public class OrderServiceImpl implements OrderService {
         return date;
     }
 
+    @Override
+    public void setBusyFalse(long driverId){
+        taxiDriveInfoMapper.setBusyFalse(driverId);
+    }
+
     /**
-     *  Принимает message от listener
+     * Принимает message от listener
      * @param message
      * @return orderId
      */
@@ -92,6 +97,12 @@ public class OrderServiceImpl implements OrderService {
         return orderId;
     }
 
+    /**
+     * Создает ордер
+     * @param clientNumber идентификатор клиента
+     * @param driverId идентификатор водителя
+     * @return идентификатор ордера
+     */
 //    @Transactional(isolation = Isolation.READ_COMMITTED)
     private long createOrder(long clientNumber, long driverId) {
         long orderId = orderMapper.findNextId();
@@ -100,6 +111,11 @@ public class OrderServiceImpl implements OrderService {
         return orderId;
     }
 
+    /**
+     * Парсит объект Message в OrderDetails
+     * @param message JSON Message из Listener
+     * @return OrderDetails
+     */
     private OrderDetails getOrderDetailsFromJSON(Message message) {
         OrderDetails orderDetails = null;
         try {
@@ -112,6 +128,11 @@ public class OrderServiceImpl implements OrderService {
         return orderDetails;
     }
 
+    /**
+     * Ищет свободного водителя
+     * @param orderDetails
+     * @return объект taxiDriverInfo
+     */
     private TaxiDriverInfo findDriver(OrderDetails orderDetails) {
         TaxiDriverInfo driver = taxiDriveInfoMapper.
                 findDriverByCityAndCarModelAndLevel(orderDetails.getCity(), orderDetails.getCarModel(), orderDetails.getLevel());
@@ -119,6 +140,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void setBusyTrue(long driverId) {
-        taxiDriveInfoMapper.setBusy(driverId);
+        taxiDriveInfoMapper.setBusyTrue(driverId);
     }
 }
