@@ -1,28 +1,25 @@
 package ru.digitalleague.taxi_company.api;
 
-import ru.digitalleague.core.model.OrderDetails;
+import org.springframework.amqp.core.Message;
 
 import ru.digitalleague.taxi_company.model.Order;
-import ru.digitalleague.taxi_company.model.TaxiDriverInfo;
 
 import java.time.OffsetDateTime;
 
 /**
  * Сервис обработки заказов.
- * */
+ */
 public interface OrderService {
 
     void save(Order order);
+
+    long catchMessageFromController(Message message);
 
     void saveEndTimeTrip(OffsetDateTime time, long orderId);
 
     void saveStartTripTime(OffsetDateTime offsetDateTime, long id);
 
-    TaxiDriverInfo findDriver(OrderDetails orderDetails);
+    OffsetDateTime findStartTimeById(long orderId);
 
-    long createOrder(long clientNumber, long driverId);
-
-//    long findOrderIdByClientNumberAndDriverId(long clientNumber, long driverId);
-
-    void setBusy(long driverId);
+    OffsetDateTime findEndTimeById(long orderId);
 }

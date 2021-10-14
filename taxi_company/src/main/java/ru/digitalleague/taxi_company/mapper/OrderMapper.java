@@ -29,19 +29,15 @@ public interface OrderMapper {
     @Update("UPDATE orders SET start_trip = #{time} WHERE order_id = #{orderId}")
     void saveStartTripTime(OffsetDateTime offsetDateTime, long orderId);
 
-    @Select("SELECT driver_id, last_name, first_name, level, car_id, create_dttm, " +
-            "minute_cost, city_id, rating, busy FROM orders WHERE car_id = #{carId} ORDER BY rating LIMIT 1")
-    TaxiDriverInfo findDriverByCarId(long carId);
-
     @Insert("INSERT INTO orders (order_id, client_number, driver_id) values (#{orderId}, #{clientNumber}, #{driverId})")
     void createNewOrder(long orderId, long clientNumber, long driverId);
 
-//    @Select("SELECT order_id FROM orders WHERE client_number = #{clientNumber} AND driver_id = #{driverId}")
-//    long findOrderIdByClientNumberAndDriverId(long clientNumber, long driverId);
-
-    @Update("UPDATE taxi_drive_info SET busy = true WHERE driver_id = #{driverId}")
-    void setBusy(long driverId);
-
     @Select("SELECT nextval('order_seq');")
     long findNextId();
+
+    @Select("SELECT start_trip FROM orders WHERE order_id = #{orderId}")
+    OffsetDateTime findStartTimeById(long orderId);
+
+    @Select("SELECT end_trip FROM orders WHERE order_id = #{orderId}")
+    OffsetDateTime findEndTimeById(long orderId);
 }

@@ -3,12 +3,14 @@ package ru.digitalleague.taxi_company.controller;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.digitalleague.core.model.OrderDetails;
 import ru.digitalleague.taxi_company.api.OrderService;
 import ru.digitalleague.taxi_company.model.Order;
 
@@ -38,10 +40,9 @@ public class TaxiController {
     @ApiOperation(value = "Контроллер для установки времени начала поездки")
     public ResponseEntity<String> startTrip(@RequestBody Order order){
         OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
-        order.setStartTrip(currentTime);
-        orderService.saveStartTripTime(order.getStartTrip(),order.getOrderId());
-        log.warn("Save order with start time " + order);
-        return ResponseEntity.ok("Start trip time: " + order.getStartTrip());
+        orderService.saveStartTripTime(currentTime,order.getOrderId());
+        log.warn("Save start time " + orderService.findStartTimeById(order.getOrderId()));
+        return ResponseEntity.ok("Start trip time: " + orderService.findStartTimeById(order.getOrderId()));
     }
 
     /**
@@ -52,13 +53,29 @@ public class TaxiController {
     @ApiOperation(value = "Контроллер для установки времени окончания поездки")
     public ResponseEntity<String> endTrip(@RequestBody Order order){
         OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
-        order.setEndTrip(currentTime);
-        orderService.saveEndTimeTrip(order.getEndTrip(),order.getOrderId());
-        log.warn("Save order with end time " + order);
+        orderService.saveEndTimeTrip(currentTime,order.getOrderId());
+        log.warn("Save end time " + orderService.findEndTimeById(order.getOrderId()));
 
-        amqpTemplate.convertAndSend("trip-result", "Клиент с ID: " + order.getClientNumber() + " завершил поездку!");
+        amqpTemplate.convertAndSend("trip-result", "Поездка завершена. Номер поездки: = " + order.getOrderId());
 
         return ResponseEntity.ok("Услуга оказана");
+    }
+
+    public void sendMessageToService(Message message){
+        orderService.catchMessageFromController(message);
+//        OrderDetails orderDetails = orderService.getOrderDetailsFromJSON(message);
+//
+//        TaxiDriverInfo driver = orderService.findDriver(orderDetails);
+//        log.info("driver: " + driver);
+//
+//        long clientNumber = orderDetails.getClientNumber();
+//        long driverId = driver.getDriverId();
+//
+//        log.info("clientNumber and driverId: " + clientNumber + "  " + driverId);
+//        long orderId = orderService.createOrder(clientNumber, driverId);
+//        log.info("orderId = " + orderId);
+
+//        return String.format("Order id: %d \nClientNumber: %d\nDriver id: %d",orderId, clientNumber, driverId);
     }
 }
 
