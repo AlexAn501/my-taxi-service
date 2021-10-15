@@ -42,4 +42,7 @@ public interface OrderMapper {
 
     @Select("SELECT driver_id FROM orders WHERE order_id = #{orderId}")
     long findDriverIdByOrderId(long orderId);
+
+    @Select("SELECT minute_cost FROM taxi_drive_info WHERE driver_id = #{driverId}")
+    int findMinuteCostByDriverId(long driverId);
 }

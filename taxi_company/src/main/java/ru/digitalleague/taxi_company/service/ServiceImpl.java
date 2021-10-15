@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.digitalleague.core.model.OrderDetails;
 import ru.digitalleague.taxi_company.api.Service;
 import ru.digitalleague.taxi_company.mapper.OrderMapper;
+import ru.digitalleague.taxi_company.mapper.OrderTotalMapper;
 import ru.digitalleague.taxi_company.mapper.TaxiDriveInfoMapper;
 import ru.digitalleague.taxi_company.model.Order;
 import ru.digitalleague.taxi_company.model.TaxiDriverInfo;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -31,6 +33,9 @@ public class ServiceImpl implements Service {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    OrderTotalMapper orderTotalMapper;
+
     @Override
     public void save(Order order) {
 
@@ -38,35 +43,71 @@ public class ServiceImpl implements Service {
         System.out.println("Order saved");
     }
 
-
+    /**
+     * Сохраняет время окончания поездки
+     * @param orderId Время, Идентификатор поездки
+     */
     @Override
     public void saveEndTimeTrip(OffsetDateTime time, long orderId) {
         orderMapper.saveEndTimeTrip(time, orderId);
         log.debug("Save End Time in OrderServiceImpl");
     }
 
+    /**
+     * Сохраняет время начала поездки
+     * @param orderId Время, Идентификатор поездки
+     */
     @Override
     public void saveStartTripTime(OffsetDateTime time, long orderId) {
         orderMapper.saveStartTripTime(time, orderId);
         log.debug("Save Start Time in OrderServiceImpl");
     }
 
+    /**
+     * Находит время начала поездки
+     * @param orderId Идентификатор поездки
+     * @return Время начала поездки
+     */
     @Override
     public OffsetDateTime findStartTimeById(long orderId){
         OffsetDateTime date = orderMapper.findStartTimeById(orderId);
         return date;
     }
 
+    /**
+     * Находит время окончания поездки
+     * @param orderId Идентификатор поездки
+     * @return Время окончания поездки
+     */
     @Override
     public OffsetDateTime findEndTimeById(long orderId){
         OffsetDateTime date = orderMapper.findEndTimeById(orderId);
         return date;
     }
 
+    /**
+     * Устанавливает флаг занятости
+     * @param orderId Идентификатор поездки
+     * @param busy флаг занятости
+     */
     @Override
-    public void setBusyFalse(long orderId){
+    public void setBusy(long orderId, boolean busy){
         long driverId = orderMapper.findDriverIdByOrderId(orderId);
-        taxiDriveInfoMapper.setBusyFalse(driverId);
+        taxiDriveInfoMapper.setBusy(driverId, busy);
+    }
+
+    /**
+     * Подсчет стоимости поездки
+     * @param orderId Идентификатор поездки
+     * @return общую стоимость поездки
+     */
+    @Override
+    public int calculationTripCost(long orderId) {
+        long timeTripInMinutes = calculationTimeTrip(orderId);
+        int minuteCost = getMinuteCost(orderId);
+        int costTrip = (int)timeTripInMinutes * minuteCost;
+        log.debug("costTrip: " + costTrip);
+        return costTrip;
     }
 
     /**
@@ -76,12 +117,48 @@ public class ServiceImpl implements Service {
      */
     @Override
     public long catchMessageFromController(Message message){
-      return init(message);
+        return init(message);
+    }
+
+    /**
+     * Сохраняет стоимость поездки
+     * @param orderId Идентификатор поездки
+     * @param tripAmount Стоимость поездки
+     */
+    @Override
+    public void saveTripAmount(long orderId, int tripAmount) {
+        orderTotalMapper.saveSumOrderByOrderId(orderId, tripAmount);
+    }
+
+    /**
+     * Получение стоимости одной минуты поездки
+     * @param orderId Идентификатор поездки
+     * @return  Стоимость поездки
+     */
+    private int getMinuteCost(long orderId){
+        long driverId = orderMapper.findDriverIdByOrderId(orderId);
+        int minuteCost = orderMapper.findMinuteCostByDriverId(driverId);
+        log.debug("minuteCost: " + minuteCost);
+        return minuteCost;
+    }
+
+    /**
+     * Подсчет времени поездки
+     * @param orderId Идентификатор поездки
+     * @return Время поездки в минутах
+     */
+    private long calculationTimeTrip(long orderId){
+        OffsetDateTime before = findStartTimeById(orderId);
+        OffsetDateTime after = findEndTimeById(orderId);
+        Duration duration = Duration.between(before,after);
+        long timeTripInMinutes = duration.toMinutes();
+        log.debug("timeTripInMinutes: " + timeTripInMinutes);
+        return timeTripInMinutes;
     }
 
     /**
      * Выполняет работу по созданию заказа
-     * @param message
+     * @param message сообщение из listener
      * @return orderId
      */
     private long init (Message message){
@@ -107,7 +184,6 @@ public class ServiceImpl implements Service {
     private long createOrder(long clientNumber, long driverId) {
         long orderId = orderMapper.findNextId();
         orderMapper.createNewOrder(orderId, clientNumber, driverId);
-        setBusyTrue(driverId);
         return orderId;
     }
 
@@ -130,16 +206,12 @@ public class ServiceImpl implements Service {
 
     /**
      * Ищет свободного водителя
-     * @param orderDetails
+     * @param orderDetails Детали заказа
      * @return объект taxiDriverInfo
      */
     private TaxiDriverInfo findDriver(OrderDetails orderDetails) {
         TaxiDriverInfo driver = taxiDriveInfoMapper.
                 findDriverByCityAndCarModelAndLevel(orderDetails.getCity(), orderDetails.getCarModel(), orderDetails.getLevel());
         return driver;
-    }
-
-    private void setBusyTrue(long driverId) {
-        taxiDriveInfoMapper.setBusyTrue(driverId);
     }
 }

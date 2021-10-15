@@ -40,6 +40,8 @@ public class TaxiController {
     public ResponseEntity<String> startTrip(@RequestBody Order order){
         OffsetDateTime currentTime = context.getBean("currentTime", OffsetDateTime.class);
         service.saveStartTripTime(currentTime,order.getOrderId());
+        //  Ищет Id водителя по Id заказа
+        service.setBusy(order.getOrderId(), true);
         log.debug("Save start time " + service.findStartTimeById(order.getOrderId()));
         return ResponseEntity.ok("Start trip time: " + service.findStartTimeById(order.getOrderId()));
     }
@@ -55,8 +57,14 @@ public class TaxiController {
         service.saveEndTimeTrip(currentTime,order.getOrderId());
         log.debug("Save end time " + service.findEndTimeById(order.getOrderId()));
         //  Ищет Id водителя по Id заказа
-        service.setBusyFalse(order.getOrderId());
-        amqpTemplate.convertAndSend("trip-result", "Поездка завершена. Номер поездки: = " + order.getOrderId());
+        service.setBusy(order.getOrderId(),false);
+
+        int costTrip = service.calculationTripCost(order.getOrderId());
+        service.saveTripAmount(order.getOrderId(), costTrip);
+
+        amqpTemplate.convertAndSend("trip-result", "Поездка завершена. " +
+                "Номер поездки: = " + order.getOrderId() +
+                " Цена поездки: = " + costTrip);
 
         return ResponseEntity.ok("Услуга оказана");
     }
@@ -72,6 +80,4 @@ public class TaxiController {
         amqpTemplate.convertAndSend("trip-result","Идентификатор заказа: " + orderId);
         log.debug("В ЦОЗ отправлен идентификатор поездки");
     }
-
-
 }

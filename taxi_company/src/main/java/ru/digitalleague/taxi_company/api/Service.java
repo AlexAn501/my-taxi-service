@@ -23,5 +23,9 @@ public interface Service {
 
     OffsetDateTime findEndTimeById(long orderId);
 
-    void setBusyFalse(long driverId);
+    void setBusy(long orderId, boolean busy);
+
+    int calculationTripCost(long orderId);
+
+    void saveTripAmount(long orderId, int tripAmount);
 }
