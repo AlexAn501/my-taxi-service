@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.web.bind.annotation.*;
 import ru.digitalleague.taxi_company.api.Service;
 import ru.digitalleague.taxi_company.model.Order;
@@ -81,7 +79,7 @@ public class TaxiController {
     @ApiOperation(value = "Контроллер оценки поездки")
     public ResponseEntity<String> gradeTrip(@RequestHeader("order_Id") long orderId,
                                             @RequestHeader("grade") int grade){
-        if(grade < 1 | grade > 5) {
+        if(grade < 1 || grade > 5) {
             return new ResponseEntity<>("Некорректная оценка. От 1 до 5.", HttpStatus.BAD_REQUEST);
         }
         service.saveGradeTrip(orderId, grade);
