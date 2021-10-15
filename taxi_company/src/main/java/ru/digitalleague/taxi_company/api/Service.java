@@ -28,4 +28,6 @@ public interface Service {
     int calculationTripCost(long orderId);
 
     void saveTripAmount(long orderId, int tripAmount);
+
+    void saveGradeTrip(long orderId, int grade);
 }

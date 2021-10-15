@@ -131,6 +131,17 @@ public class ServiceImpl implements Service {
     }
 
     /**
+     * Сохраняет оценку поездки
+     * @param orderId Идентификатор поездки
+     * @param grade Оценка
+     */
+    @Override
+    public void saveGradeTrip(long orderId, int grade) {
+        long driverId = orderMapper.findDriverIdByOrderId(orderId);
+        taxiDriveInfoMapper.saveGradeTrip(driverId, grade);
+    }
+
+    /**
      * Получение стоимости одной минуты поездки
      * @param orderId Идентификатор поездки
      * @return  Стоимость поездки

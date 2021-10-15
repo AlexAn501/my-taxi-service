@@ -6,10 +6,11 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Headers;
+import org.springframework.web.bind.annotation.*;
 import ru.digitalleague.taxi_company.api.Service;
 import ru.digitalleague.taxi_company.model.Order;
 
@@ -67,6 +68,24 @@ public class TaxiController {
                 " Цена поездки: = " + costTrip);
 
         return ResponseEntity.ok("Услуга оказана");
+    }
+
+    /**
+     * Метод реализует оценку поездки
+     * @param orderId Идентификатор поездки
+     * @param grade оценка от 1 до 5
+     * @return
+     */
+
+    @GetMapping("/grade")
+    @ApiOperation(value = "Контроллер оценки поездки")
+    public ResponseEntity<String> gradeTrip(@RequestHeader("order_Id") long orderId,
+                                            @RequestHeader("grade") int grade){
+        if(grade < 1 | grade > 5) {
+            return new ResponseEntity<>("Некорректная оценка. От 1 до 5.", HttpStatus.BAD_REQUEST);
+        }
+        service.saveGradeTrip(orderId, grade);
+        return new ResponseEntity<>("Спасибо за отзыв", HttpStatus.OK);
     }
 
     /**
