@@ -7,7 +7,13 @@ import ru.digitalleague.taxi_company.model.TaxiDriverInfo;
 @Repository
 @Mapper
 public interface TaxiDriveInfoMapper {
-
+    /**
+     * Поиск водителя по городу, модели машины и уровню.
+     * @param cityName Название города
+     * @param carModel Название модели
+     * @param level Уровень водителя
+     * @return Возвращает свободного водителя с самым высоким рейтингом
+     */
     @Results(id = "driver", value = {
             @Result(property = "driverId", column = "driver_id"),
             @Result(property = "lastName", column = "last_name"),
@@ -29,9 +35,19 @@ public interface TaxiDriveInfoMapper {
             " ORDER BY rating DESC limit 1")
     TaxiDriverInfo findDriverByCityAndCarModelAndLevel(String cityName, String carModel, int level);
 
+    /**
+     * Меняет флаг занятости водителя
+     * @param driverId Идентификатор водителя
+     * @param busy Занят true/false
+     */
     @Update("UPDATE taxi_drive_info SET busy = #{busy} WHERE driver_id = #{driverId}")
     void setBusy(long driverId, boolean busy);
 
+    /**
+     * Устанавливает рейтинг водителю
+     * @param driverId Идентификатор водителя
+     * @param grade Оценка клиента
+     */
     @Update("UPDATE taxi_drive_info SET rating = #{grade} WHERE driver_id = #{driverId}")
     void saveGradeTrip(long driverId, int grade);
 }

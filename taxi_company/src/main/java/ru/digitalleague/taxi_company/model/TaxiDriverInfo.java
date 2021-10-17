@@ -69,5 +69,5 @@ public class TaxiDriverInfo {
      * Занят ли водитель
      */
     @ApiModelProperty("Занят ли водитель")
-    private boolean isBusy;
+    private boolean busy;
 }
