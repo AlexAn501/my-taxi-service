@@ -28,7 +28,7 @@ public interface OrderMapper {
     @Update("UPDATE orders SET start_trip = #{time} WHERE order_id = #{orderId}")
     void saveStartTripTime(OffsetDateTime time, long orderId);
 
-    @Insert("INSERT INTO orders (order_id, client_number, driver_id) values (#{orderId}, #{clientNumber}, #{driverId})")
+    @Insert("INSERT INTO orders (order_id, client_number, driver_id) VALUES (#{orderId}, #{clientNumber}, #{driverId})")
     void createNewOrder(long orderId, long clientNumber, long driverId);
 
     @Select("SELECT nextval('order_seq');")

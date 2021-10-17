@@ -26,7 +26,7 @@ public interface TaxiDriveInfoMapper {
             " INNER JOIN car c on c.id = taxi_drive_info.car_id" +
             " INNER JOIN city_queue cq on cq.city_id = taxi_drive_info.city_id" +
             " WHERE name = #{cityName} and model = #{carModel} and busy = false and level = #{level}" +
-            " limit 1")
+            " ORDER BY rating DESC limit 1")
     TaxiDriverInfo findDriverByCityAndCarModelAndLevel(String cityName, String carModel, int level);
 
     @Update("UPDATE taxi_drive_info SET busy = #{busy} WHERE driver_id = #{driverId}")
