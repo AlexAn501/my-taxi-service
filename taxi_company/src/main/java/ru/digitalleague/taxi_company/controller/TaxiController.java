@@ -94,7 +94,7 @@ public class TaxiController {
 
     public void sendMessageToService(Message message){
         long orderId = service.catchMessageFromController(message);
-        amqpTemplate.convertAndSend("trip-result","Идентификатор заказа: " + orderId);
+//        amqpTemplate.convertAndSend("trip-result","Идентификатор заказа: " + orderId);
         log.debug("В ЦОЗ отправлен идентификатор поездки");
     }
 }

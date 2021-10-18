@@ -9,6 +9,7 @@ import ru.digitalleague.core.model.OrderDetails;
 import ru.digitalleague.taxi_company.api.Service;
 import ru.digitalleague.taxi_company.mapper.OrderMapper;
 import ru.digitalleague.taxi_company.mapper.OrderTotalMapper;
+import ru.digitalleague.taxi_company.mapper.GradeTaxiDriverMapper;
 import ru.digitalleague.taxi_company.mapper.TaxiDriveInfoMapper;
 import ru.digitalleague.taxi_company.model.Order;
 import ru.digitalleague.taxi_company.model.TaxiDriverInfo;
@@ -35,6 +36,9 @@ public class ServiceImpl implements Service {
 
     @Autowired
     OrderTotalMapper orderTotalMapper;
+
+    @Autowired
+    GradeTaxiDriverMapper gradeTaxiDriverMapper;
 
     @Override
     public void save(Order order) {
@@ -138,7 +142,18 @@ public class ServiceImpl implements Service {
     @Override
     public void saveGradeTrip(long orderId, int grade) {
         long driverId = orderMapper.findDriverIdByOrderId(orderId);
-        taxiDriveInfoMapper.saveGradeTrip(driverId, grade);
+        gradeTaxiDriverMapper.saveGradeTrip(orderId, driverId, grade);
+        calculationAndUpdateAvgRatingDriver(driverId);
+    }
+
+    /**
+     * Пересчитывает и сохраняет средний рейтинг водителя
+     * @param driverId Идентификатор водителя
+     */
+    private void calculationAndUpdateAvgRatingDriver(long driverId){
+        //Округление до целого
+        int gradeAvg = Math.round(gradeTaxiDriverMapper.findAverageGrade(driverId));
+        taxiDriveInfoMapper.saveAvgRating(driverId, gradeAvg);
     }
 
     /**

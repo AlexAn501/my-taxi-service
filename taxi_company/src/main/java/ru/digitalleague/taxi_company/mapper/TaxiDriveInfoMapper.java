@@ -23,7 +23,7 @@ public interface TaxiDriveInfoMapper {
             @Result(property = "carId", column = "car_id"),
             @Result(property = "minuteCost", column = "minute_cost"),
             @Result(property = "rating", column = "rating"),
-            @Result(property = "isBusy", column = "busy"),
+            @Result(property = "busy", column = "busy"),
             @Result(property = "cityId", column = "city_id")
     })
     @Select("SELECT driver_id, first_name, last_name, level, create_dttm, model as car_model," +
@@ -48,6 +48,7 @@ public interface TaxiDriveInfoMapper {
      * @param driverId Идентификатор водителя
      * @param grade Оценка клиента
      */
-    @Update("UPDATE taxi_drive_info SET rating = #{grade} WHERE driver_id = #{driverId}")
-    void saveGradeTrip(long driverId, int grade);
+
+    @Update("UPDATE taxi_drive_info SET rating = #{grade} WHERE  driver_id = #{driverId}")
+    void saveAvgRating(long driverId, int grade);
 }

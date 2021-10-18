@@ -89,4 +89,11 @@
             <sqlFile path="sql/core/rollback/alter_car_rollback.sql" relativeToChangelogFile="true"/>
         </rollback>
     </changeSet>
+
+    <changeSet id="2021-10-18 19:40" author="aantonov">
+        <sqlFile path="sql/core/grade_taxi_driver.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="sql/core/rollback/grade_taxi_driver_rollback.sql" relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>
