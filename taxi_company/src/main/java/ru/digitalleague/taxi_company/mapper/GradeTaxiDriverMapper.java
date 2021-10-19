@@ -17,6 +17,6 @@ public interface GradeTaxiDriverMapper {
     @Insert("INSERT INTO grade_taxi_driver (order_id, driver_id, grade) VALUES (#{orderId}, #{driverId}, #{grade})")
     void saveGradeTrip(long orderId, long driverId, int grade);
 
-    @Select("SELECT AVG(grade) FROM grade_taxi_driver")
+    @Select("SELECT AVG(grade) FROM grade_taxi_driver WHERE driver_id = #{driverId}")
     float findAverageGrade(long driverId);
 }
